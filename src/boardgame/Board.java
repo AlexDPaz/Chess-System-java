@@ -1,5 +1,7 @@
 package boardgame;
 
+import chess.ChessPiece;
+
 public class Board {
 	
 	private int rows;
@@ -30,8 +32,8 @@ public class Board {
 	}
 
 	//Criando o metodo para retornar a peça dado uma linha e uma coluna 
-	public Piece piece(int row, int column) {
-		return pieces[row][column];
+	public ChessPiece piece(int row, int column) {
+		return (ChessPiece) pieces[row][column];
 	}
 	//Criando uma sobrecargar do metodo anterior recebendo Position position para retorna a peça pela positição
 	public Piece piece(Position position) {
