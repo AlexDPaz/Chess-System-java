@@ -13,19 +13,29 @@ public class Board {
 		pieces = new Piece[rows][columns];
 	}
 
-	protected int getRows() {
+	public int getRows() {
 		return rows;
 	}
 
-	protected void setRows(int rows) {
+	public void setRows(int rows) {
 		this.rows = rows;
 	}
 
-	protected int getColumns() {
+	public int getColumns() {
 		return columns;
 	}
 
-	protected void setColumns(int columns) {
+	public void setColumns(int columns) {
 		this.columns = columns;
 	}
+
+	//Criando o metodo para retornar a peça dado uma linha e uma coluna 
+	public Piece piece(int row, int column) {
+		return pieces[row][column];
+	}
+	//Criando uma sobrecargar do metodo anterior recebendo Position position para retorna a peça pela positição
+	public Piece piece(Position position) {
+		return pieces[position.getRow()][position.getColumn()];
+	}
+	
 }
