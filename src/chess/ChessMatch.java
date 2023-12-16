@@ -1,6 +1,8 @@
 package chess;
 
 import boardgame.Board;
+import boardgame.Piece;
+import boardgame.Position;
 import chess.pieces.King;
 import chess.pieces.Rook;
 
@@ -22,6 +24,26 @@ public class ChessMatch {
 			}
 		}
 		return mat;
+	}
+	
+	public ChessPiece performChessPiece(ChessPosition sourcePosition, ChessPosition targetPosition) {
+		Position source = sourcePosition.toPosition();
+		Position target = targetPosition.toPosition();
+		validateSourcePostion(source);
+		Piece capturePiece = makeMove(source, target);
+		return (ChessPiece)capturePiece;
+		}
+	
+	private Piece makeMove(Position source, Position target) {
+		Piece p = board.removedPiece(source);
+		Piece capturedPiece = board.removedPiece(target);
+		board.placePiece(p, target);
+		return capturedPiece;
+	}
+	
+	private void validateSourcePostion(Position position) {
+		if(!board.thereIsAPiece(position))
+			throw new ChessException("there is no piece on source porition");
 	}
 
 	// Metodo para instaciar as peças do xadrez informando as cordenadas no sistema

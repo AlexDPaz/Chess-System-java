@@ -34,6 +34,7 @@ public class Board {
 		}
 		return (ChessPiece) pieces[row][column];
 	}
+	
 	//Criando uma sobrecargar do metodo anterior recebendo Position position para retorna a peça pela positição
 	public Piece piece(Position position) {
 		if(!positionExists(position)) {
@@ -41,14 +42,27 @@ public class Board {
 			}
 		return pieces[position.getRow()][position.getColumn()];
 	}
+	
 	//Metodo para posicionar a peça no tabuleiro 
 	public void placePiece(Piece piece, Position position) {
 		if (thereIsAPiece(position)) {
 			throw new BoardExpection("Thre is already a piece on position " + position);
 		}
 		pieces[position.getRow()][position.getColumn()] = piece;
-		piece.position = position;
-		
+		piece.position = position;	
+	}
+	
+	public Piece removedPiece(Position position) {
+		if(!positionExists(position)) {
+			throw new BoardExpection("Position not on the board");
+		}
+		if (piece(position) == null) {
+			return null;
+		}
+		Piece aux = piece(position);
+		aux.position = null;
+		pieces[position.getRow()][position.getColumn()] = null;
+		return aux;
 	}
 	//Metodo auxiliar para dado momento que sera mais facil testar pela linha e pela coluna
 	private boolean positionExists(int row, int column) {
@@ -59,7 +73,7 @@ public class Board {
 		return positionExists(position.getRow(), position.getColumn());
 	}
 	
-	private boolean thereIsAPiece(Position position) {
+	public boolean thereIsAPiece(Position position) {
 		if(!positionExists(position)) {
 			throw new BoardExpection("Position not on the board ");
 			}
