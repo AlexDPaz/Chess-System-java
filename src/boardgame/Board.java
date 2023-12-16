@@ -32,12 +32,18 @@ public class Board {
 	}
 
 	//Criando o metodo para retornar a peça dado uma linha e uma coluna 
-	public ChessPiece piece(int row, int column) {
+	public Piece piece(int row, int column) {
 		return (ChessPiece) pieces[row][column];
 	}
 	//Criando uma sobrecargar do metodo anterior recebendo Position position para retorna a peça pela positição
 	public Piece piece(Position position) {
 		return pieces[position.getRow()][position.getColumn()];
+	}
+	//Metodo para posicionar a peça no tabuleiro 
+	public void placePiece(Piece piece, Position position) {
+		pieces[position.getRow()][position.getColumn()] = piece;
+		piece.position = position;
+		
 	}
 	
 }
