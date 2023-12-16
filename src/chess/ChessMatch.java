@@ -23,9 +23,14 @@ public class ChessMatch {
 		}
 		return mat;
 	}
+	//Metodo para instaciar as peças do xadrez informando as cordenadas no sistema do xadrez e não no sistema da matriz 
+	private void placeNewPiece(char column, int row, ChessPiece piece) {
+		board.placePiece(piece, new ChessPosition(column, row).toPosition());
+	}
+	
 	//Metodo para o setup inicial da partida de xadrez
 	private void initalsetup() {
-		board.placePiece(new Rook(board, Color.WHITE), new Position(2, 1));
-		board.placePiece(new King(board, Color.BLACK), new Position(0, 4));
+		placeNewPiece('b', 6, new Rook(board, Color.WHITE));
+		placeNewPiece('e', 8, new King(board, Color.BLACK));
 	}
 }
