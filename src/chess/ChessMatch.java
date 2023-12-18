@@ -42,9 +42,14 @@ public class ChessMatch {
 	}
 	
 	private void validateSourcePostion(Position position) {
-		if(!board.thereIsAPiece(position))
+		if(!board.thereIsAPiece(position)) {
 			throw new ChessException("there is no piece on source porition");
+		}
+		if (!board.piece(position).isThereAnyPossibleMove()) {
+			throw new ChessException("There no possible moves for the chosen piece ");
+		}
 	}
+	
 
 	// Metodo para instaciar as peças do xadrez informando as cordenadas no sistema
 	// do xadrez e não no sistema da matriz
