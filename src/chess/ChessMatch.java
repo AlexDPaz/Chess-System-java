@@ -35,6 +35,13 @@ public class ChessMatch {
 		return (ChessPiece)capturePiece;
 		}
 	
+	//PAra indicar as possiveis direçoes das peças 
+	public boolean[][] possibleMoves(ChessPosition sourcePosition){
+		Position postion = sourcePosition.toPosition();// converntendo a posição de xadrez em uma posição de matriz normal
+		validateSourcePostion(postion);//validar a posição após o usuaria entra com ela
+		return board.piece(postion).possibleMove();//para poder imprimir as posiçoes possivel apartir da posição de origem
+	}
+	
 	private Piece makeMove(Position source, Position target) {
 		Piece p = board.removedPiece(source);
 		Piece capturedPiece = board.removedPiece(target);
