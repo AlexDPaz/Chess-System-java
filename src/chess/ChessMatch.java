@@ -9,10 +9,22 @@ import chess.pieces.Rook;
 public class ChessMatch {
 
 	private Board board;
+	private int turn;
+	private Color currentPlayer;
 
 	public ChessMatch() {
 		board = new Board(8, 8);
+		turn = 1;
+		currentPlayer = Color.WHITE;
 		initalsetup();
+	}
+	
+	public int getTurn() {
+		return turn;
+	}
+	
+	public Color getcurrentPlayer() {
+		return currentPlayer;
 	}
 
 	// Retorna uma matriz de peças correspondente a essa partida
@@ -32,6 +44,7 @@ public class ChessMatch {
 		validateSourcePostion(source);
 		validateTargetPostion(source, target);
 		Piece capturePiece = makeMove(source, target);
+		nextTurn();//chamada para trucar o turno 
 		return (ChessPiece)capturePiece;
 		}
 	
@@ -53,6 +66,9 @@ public class ChessMatch {
 		if(!board.thereIsAPiece(position)) {
 			throw new ChessException("there is no piece on source porition");
 		}
+		if (currentPlayer != ((ChessPiece) board.piece(position)).getColor()) {
+			throw new ChessException("The chosen piece isn't yours");
+		}
 		if (!board.piece(position).isThereAnyPossibleMove()) {
 			throw new ChessException("There no possible moves for the chosen piece ");
 		}
@@ -62,6 +78,14 @@ public class ChessMatch {
 		if(!board.piece(source).possibleMove(target)) {
 			throw new ChessException("The chosen piece can't move to traget possition ");
 		}
+	}
+	
+	//Metodo para troca de turno
+	public void nextTurn() {
+		turn++; // incrementando o turno 
+		currentPlayer = (currentPlayer == Color.WHITE) ? Color.BLACK : Color.WHITE;
+		// expressâo condiçional ternaria para mudar a vez do jogador 
+		//? = então, : caso contrario
 	}
 	
 

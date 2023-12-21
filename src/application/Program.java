@@ -20,7 +20,7 @@ public class Program {
 			try {
 				UI.clearScreen();
 				// Ciado uma função para imprir as peças da partida
-				UI.printBoard(chessMatch.getPieces());
+				UI.printChessMatch(chessMatch);
 				System.out.println();
 				System.out.print("Source: ");
 				ChessPosition source = UI.readChessPosition(sc);
