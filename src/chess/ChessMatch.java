@@ -16,6 +16,7 @@ public class ChessMatch {
 	private int turn;
 	private Color currentPlayer;
 	private boolean check;
+	private boolean checkMate;
 	
 	List<Piece> piecesOnTheBoard = new ArrayList<>();
 	List<Piece> capturedPieces = new ArrayList<>();
@@ -37,6 +38,10 @@ public class ChessMatch {
 	
 	public boolean getCheck() {
 		return check;
+	}
+	
+	public boolean getCheckMate() {
+		return checkMate;
 	}
 
 	// Retorna uma matriz de peças correspondente a essa partida
@@ -65,7 +70,12 @@ public class ChessMatch {
 		
 		check = (testCheck(opponent(currentPlayer))) ? true : false;  // feito um expressão condicional ternaria para verificar se o oponente ficou em check 
 		
-		nextTurn();//chamada para trucar o turno 
+		if (testCheckMate(opponent(currentPlayer))){ // testar se a jogar realizada deixou o oponente em checkmate o jogo tem que acabar se não a partida continua	
+			checkMate = true;
+		}
+		else {
+		nextTurn();//chamada para trucar o turno
+		}
 		return (ChessPiece)capturePiece;
 		}
 	
@@ -154,6 +164,31 @@ public class ChessMatch {
 		}
 		return false;
 	}
+	
+	private boolean testCheckMate(Color color) {
+		if (!testCheck(color)) {
+			return false;
+		}
+		List<Piece> list = piecesOnTheBoard.stream().filter(x ->((ChessPiece)x).getColor() == color).collect(Collectors.toList());
+		for (Piece p : list) {
+			boolean [][] mat = p.possibleMove();
+			for(int i=0; i<board.getRows(); i++) {
+				for(int j=0; j<board.getColumns(); j++) {
+					if (mat[i][j]) { // laço para verificar se tem movimento possivel e se o movimento tira do check
+						Position source = ((ChessPiece)p).getChessPosition().toPosition();
+						Position target = new Position(i, j);
+						Piece capturedPiece = makeMove(source, target);
+						boolean testCheck = testCheck(color);
+						undoMove(source, target, capturedPiece);
+						if(!testCheck) {
+							return false;
+						}
+					}
+				}
+			}
+		}
+		return true; // esgotando laço e não encontrar nenhum movimento possivel para sair do check então retornar True para checkmate
+	}
 
 	// Metodo para instaciar as peças do xadrez informando as cordenadas no sistema
 	// do xadrez e não no sistema da matriz
@@ -164,7 +199,15 @@ public class ChessMatch {
 
 	// Metodo para o setup inicial da partida de xadrez
 	private void initalsetup() {
-		placeNewPiece('c', 1, new Rook(board, Color.WHITE));
+		
+		placeNewPiece('h', 7, new Rook(board, Color.WHITE));
+		placeNewPiece('d', 1, new Rook(board, Color.WHITE));
+		placeNewPiece('e', 1, new King(board, Color.WHITE));
+		
+		placeNewPiece('b', 8, new Rook(board, Color.BLACK));
+		placeNewPiece('a', 8, new King(board, Color.BLACK));
+		
+		/*placeNewPiece('c', 1, new Rook(board, Color.WHITE));
 		placeNewPiece('c', 2, new Rook(board, Color.WHITE));
 		placeNewPiece('d', 2, new Rook(board, Color.WHITE));
 		placeNewPiece('e', 2, new Rook(board, Color.WHITE));
@@ -176,6 +219,6 @@ public class ChessMatch {
 		placeNewPiece('d', 7, new Rook(board, Color.BLACK));
 		placeNewPiece('e', 7, new Rook(board, Color.BLACK));
 		placeNewPiece('e', 8, new Rook(board, Color.BLACK));
-		placeNewPiece('d', 8, new King(board, Color.BLACK));
+		placeNewPiece('d', 8, new King(board, Color.BLACK));*/
 	}
 }
