@@ -20,8 +20,8 @@ public class ChessMatch {
 	private boolean check;
 	private boolean checkMate;
 	
-	List<Piece> piecesOnTheBoard = new ArrayList<>();
-	List<Piece> capturedPieces = new ArrayList<>();
+	private List<Piece> piecesOnTheBoard = new ArrayList<>();
+	private List<Piece> capturedPieces = new ArrayList<>();
 
 	public ChessMatch() {
 		board = new Board(8, 8);
@@ -34,7 +34,7 @@ public class ChessMatch {
 		return turn;
 	}
 	
-	public Color getcurrentPlayer() {
+	public Color getCurrentPlayer() {
 		return currentPlayer;
 	}
 	
@@ -86,6 +86,24 @@ public class ChessMatch {
 		Position postion = sourcePosition.toPosition();// converntendo a posição de xadrez em uma posição de matriz normal
 		validateSourcePostion(postion);//validar a posição após o usuaria entra com ela
 		return board.piece(postion).possibleMove();//para poder imprimir as posiçoes possivel apartir da posição de origem
+	}
+	
+	public ChessPiece performChessMove(ChessPosition sourcePosition, ChessPosition targetPosition) {
+		Position source = sourcePosition.toPosition();
+		Position target = targetPosition.toPosition();
+		validateSourcePostion(source);
+		validateTargetPostion(source, target);
+		Piece capturedPiece = makeMove(source, target);
+		
+		if (testCheck(currentPlayer)) {
+			undoMove(source, target, capturedPiece);
+			throw new ChessException("You can't put yourself in check");
+		}
+		
+		check = (testCheck(opponent(currentPlayer))) ? true : false;
+		
+		nextTurn();
+		return (ChessPiece)capturedPiece;
 	}
 	
 	private Piece makeMove(Position source, Position target) {
@@ -204,11 +222,11 @@ public class ChessMatch {
 	// Metodo para o setup inicial da partida de xadrez
 	private void initalsetup() {
 		
-		placeNewPiece('h', 1, new Rook(board, Color.WHITE));
+		placeNewPiece('a', 1, new Rook(board, Color.WHITE));
 		placeNewPiece('c', 1, new Bishop(board, Color.WHITE));
 		placeNewPiece('e', 1, new King(board, Color.WHITE));
 		placeNewPiece('f', 1, new Bishop(board, Color.WHITE));
-		placeNewPiece('a', 1, new Rook(board, Color.WHITE));
+		placeNewPiece('h', 1, new Rook(board, Color.WHITE));
 		placeNewPiece('a', 2, new Pawn(board, Color.WHITE));
 		placeNewPiece('b', 2, new Pawn(board, Color.WHITE));
 		placeNewPiece('c', 2, new Pawn(board, Color.WHITE));

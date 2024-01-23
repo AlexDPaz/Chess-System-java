@@ -22,7 +22,7 @@ public class Program {
 			try {
 				UI.clearScreen();
 				// Ciado uma função para imprir as peças da partida
-				UI.printChessMatch(chessMatch, captured);
+				UI.printMatch(chessMatch, captured);
 				System.out.println();
 				System.out.print("Source: ");
 				ChessPosition source = UI.readChessPosition(sc);
@@ -36,7 +36,7 @@ public class Program {
 				System.out.print("Target: ");
 				ChessPosition target = UI.readChessPosition(sc);
 	
-				ChessPiece capturedPiece = chessMatch.performChessPiece(source, target);
+				ChessPiece capturedPiece = chessMatch.performChessMove(source, target);
 				//laço para add a peças capturadas na lista de peças capturadas
 				if(capturedPiece != null) {
 					captured.add(capturedPiece);
@@ -52,6 +52,6 @@ public class Program {
 			}
 		}
 		UI.clearScreen();
-		UI.printChessMatch(chessMatch, captured);
+		UI.printMatch(chessMatch, captured);
 	}
 }
